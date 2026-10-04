@@ -1,0 +1,11 @@
+source_id,tipo,texto,origen_creador,veces_visto
+S01,pregunta,¿Esto es una estafa? ¿Cómo sé que no me van a quitar plata?,@pepe_contador,14
+S02,objecion,Me da pena que mi familia sepa cuánto debo,@lau.ahorra,9
+S03,pregunta,¿Qué pasa si ya me llamó un cobrador? ¿Es tarde para pedir ayuda?,@donjuan_cuentas,11
+S04,objecion,"Ya intenté pagar solo y no pude, ¿para qué voy a intentarlo otra vez?",@marta_finanzas,8
+S05,tendencia,Videos de 'mi primer mes pagando sin ahogarme' tienen mucha retención entre hispanos,@lau.ahorra,6
+S06,pregunta,¿Qué es un Consejero y en qué se diferencia de un banco?,@donjuan_cuentas,7
+S07,objecion,Escuché que esto arruina mi crédito para siempre,@marta_finanzas,12
+S08,tendencia,Mitos vs. realidades sobre las deudas médicas (formato de tarjetas rápidas),@pepe_contador,5
+S09,pregunta,"No hablo bien inglés, ¿me atienden en español?",@donjuan_cuentas,4
+S10,objecion,"No sé cuánto debo en total, me da miedo sumarlo",@lau.ahorra,10

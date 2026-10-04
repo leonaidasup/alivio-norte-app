@@ -1,0 +1,107 @@
+version: "1.1"
+agencia: "Alivio Norte"
+partner: "Consejería Clara"
+termino_personal_partner: "Consejero"
+
+# Candados: el sistema nunca actúa solo hacia afuera.
+guardrails:
+  auto_enviar: false
+  auto_transferir: false
+  ante_duda: "escalar_humano"
+
+# Orden en que se decide (primera regla que aplica gana):
+#   1) riesgo crítico (peso >= umbral_critico)        -> escalar_humano
+#   2) spam o fuera de alcance                        -> ignorar
+#   3) suma de riesgos >= umbral_escalar              -> escalar_humano
+#   4) deuda no elegible o monto muy alto             -> escalar_humano
+#   5) monto bajo                                     -> accion_monto_bajo
+#   6) en otro caso                                   -> responder (pre-califica + borrador)
+riesgo:
+  umbral_critico: 9
+  umbral_escalar: 5
+
+reglas_monto:
+  monto_minimo_usd: 5000  # Por debajo del mínimo: responder_no_califica | ignorar | escalar_humano
+  accion_monto_bajo: "responder_no_califica" # (ignorar a alguien con deuda real es mala experiencia; por eso el default cambia)
+  monto_alto_revision_usd: 75000
+
+# Tipos de deuda. Cada término es una raíz: "medic" atrapa médica, médicos, etc.
+deudas_elegibles:
+  tarjeta_credito: [tarjeta, visa, mastercard, amex, chase, discover, discovery, "capital one", "tienda departamental", "credit card"]
+  prestamo_personal: ["prestamo personal", prestamo]
+  gastos_medicos: [medic, hospital, clinica]
+
+deudas_no_elegibles:
+  hipoteca: [hipoteca]
+  prestamo_estudiantil: [estudiantil]
+  prestamo_auto: ["prestamo de auto", "prestamo del auto", "prestamo del carro", "financiamiento del auto", "deuda del carro"]
+
+# Palabras que indican que el mensaje trata de una deuda (aparte del monto y el tipo)
+senales_deuda: [debo, deuda, deudas, intereses, "pagos minimos", "los minimos", "bajar la cuota"]
+
+# Frases inocentes que contienen una raíz de riesgo. Se borran del texto ANTES de
+frases_neutras: ["sin embargo", "oferta y demanda", "alta demanda", "mucha demanda", "buen juicio", "a mi juicio"]
+
+# ---------- IGNORAR ----------
+ignorar:
+  mensajes_exactos: [ok, jaja, jajaja, gracias, listo]
+  solo_emojis: true
+  spam_siempre: [bitcoin, crypto, cripto, "duplica tus ingresos", seguidores, siganme, "gana dinero", "sin buro", ".com"]
+  fuera_de_alcance_si_sin_deuda: [vacantes, empleo, trabajo, "busco trabajo", "buscan gente", "atencion al cliente", inversion, publicidad]
+  baja_voluntaria: ["darme de baja", "no me escriban", "stop"]
+  baja_marca_no_contactar: true
+
+# ---------- ESCALAR A HUMANO ----------
+# peso >= umbral_critico: escala sin más. Si no, los pesos se suman contra umbral_escalar.
+categorias_escalar_humano:
+  riesgo_emocional:
+    peso: 10
+    terminos: [suicid, "quitarme la vida", desesperad, "no puedo mas", "no aguanto", "ya no quiero seguir", "sin salida"]
+  legal:
+    peso: 9
+    terminos: [abogad, demand, juez, juicio, embarg, quiebra, bancarrota, citatorio, "orden judicial"]
+  datos_sensibles:
+    peso: 9
+    regex: ['\b\d{3}-\d{2}-\d{4}\b']   # formato de número de seguro social
+    terminos: ["seguro social", ssn, "numero de tarjeta"]
+  hostigamiento_cobranza:
+    peso: 7
+    terminos: [acoso, acosa, acosando, amenaz, coleccionista, cobrador]
+  fraude_o_desconfianza:
+    peso: 7
+    terminos: [fraud, estafa, robar]
+  promesa_de_ahorro:
+    peso: 7
+    terminos: [garantiz, garantia, descuento, "cuanto me ahorr", "cuanto voy a ahorr"]
+  precio_o_tarifas:
+    peso: 7
+    terminos: ["cuanto cobran", "cuanto cuesta", "cuanto me cobr", tarifa, honorarios, comision]
+  deuda_ajena_o_disputada:
+    peso: 6
+    terminos: ["no es mia", "no es mi deuda"]
+  deuda_de_negocio:
+    peso: 5
+    terminos: ["para un negocio", "de mi negocio", "mi empresa"]
+  programa_previo:
+    peso: 5
+    terminos: ["consolidacion anterior", "programa anterior"]
+  pide_humano:
+    peso: 5
+    terminos: ["hablar con una persona", "hablar con un humano", "agente humano"]
+  vivienda_en_riesgo:
+    peso: 4
+    terminos: ["perder mi casa", "quitar la casa", "quiten la casa"]
+
+# ---------- PRE-CALIFICACIÓN ----------
+precalificacion:
+  quiere_consejero: [consejero, asesor, "me llamen", "me pueden llamar", "agendar una llamada", "me pasa con", "hablar con un", "quisiera hablar"]
+  urgencia: ["hoy mismo", urgente, "lo antes posible"]
+
+# ---------- CUMPLIMIENTO DE LENGUAJE ----------
+compliance:
+  termino_prohibido: "asesor"
+  termino_obligatorio: "Consejero"
+  reemplazos: {asesor: "Consejero", asesores: "Consejeros"}
+  garantias_prohibidas: [garantizado, garantizamos, prometemos, "te aseguro", "100% seguro", "sin riesgo", "te vamos a ahorrar", "eliminamos tu deuda"]
+  vocabulario_permitido_ahorro: ["podría", "en muchos casos", "dependiendo de tu perfil", "es posible"]
+  nunca_afirmar: [tasas, "puntajes de crédito", tarifas]

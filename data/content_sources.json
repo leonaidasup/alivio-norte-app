@@ -1,0 +1,72 @@
+[
+  {
+    "id": "SRC-001",
+    "tipo": "pregunta_frecuente",
+    "titulo": "¿El programa de consolidación/alivio arruinará mi crédito?",
+    "resumen": "Los clientes temen perder su score crediticio. La respuesta debe aclarar que hay un impacto temporal pero que acumular pagos atrasados e intereses causa un daño mayor a largo plazo.",
+    "angulo_video": "Mito vs Realidad: Lo que no te cuentan del credit score al negociar deudas."
+  },
+  {
+    "id": "SRC-002",
+    "tipo": "objecion",
+    "titulo": "¿Por qué no negociar directamente con el banco?",
+    "resumen": "Los bancos suelen exigir pagos inmediatos y rara vez ofrecen quitas significativas a individuos sin representación o un programa estructurado.",
+    "angulo_video": "Por qué llamar al banco tú solo casi nunca funciona cuando debes más de $5k."
+  },
+  {
+    "id": "SRC-003",
+    "tipo": "tendencia",
+    "titulo": "Aumento del pago mínimo en tarjetas de crédito en 2026",
+    "resumen": "Las tasas de interés altas hacen que el 90% del pago mínimo se vaya solo a intereses, extendiendo deudas de $8,000 a más de 15 años.",
+    "angulo_video": "La trampa matemática del pago mínimo: Cómo $8,000 se convierten en $25,000."
+  },
+  {
+    "id": "SRC-004",
+    "tipo": "pregunta_frecuente",
+    "titulo": "¿Pueden embargarme el sueldo o la cuenta bancaria?",
+    "resumen": "Explicación calmada de que las agencias de cobro intimidan, pero un embargo requiere un proceso judicial extenso y la consejería preventiva detiene esa escalada.",
+    "angulo_video": "3 señales de que una carta de cobro es intimidación y no una orden judicial."
+  },
+  {
+    "id": "SRC-005",
+    "tipo": "objecion",
+    "titulo": "¿Es esto un préstamo nuevo para pagar otros préstamos?",
+    "resumen": "Aclarar que no es tomar más deuda ni adquirir otro crédito, sino reestructurar lo que ya debes bajo nuevas condiciones acordadas.",
+    "angulo_video": "No pidas otro préstamo para pagar tus tarjetas: Esta es la alternativa real."
+  },
+  {
+    "id": "SRC-006",
+    "tipo": "tendencia",
+    "titulo": "Estrés financiero e insomnio en familias hispanas en EE. UU.",
+    "resumen": "Historias reales de personas que no pueden dormir por llamadas de cobradores a las 8 AM.",
+    "angulo_video": "Cómo detener las llamadas de cobradores y recuperar la tranquilidad en 30 días."
+  },
+  {
+    "id": "SRC-007",
+    "tipo": "pregunta_frecuente",
+    "titulo": "¿Qué diferencia hay entre un asesor financiero y un Consejero de alivio?",
+    "resumen": "El asesor maneja inversiones y patrimonio; el Consejero se enfoca en resolver deudas de tarjeta de crédito no aseguradas.",
+    "angulo_video": "A quién debes acudir según el tipo de problema financiero que tienes hoy."
+  },
+  {
+    "id": "SRC-008",
+    "tipo": "objecion",
+    "titulo": "¿Qué pasa con mis tarjetas durante el programa?",
+    "resumen": "Deben congelarse o cerrarse temporalmente para evitar acumular más saldo durante el proceso de negociación.",
+    "angulo_video": "La regla de oro para salir de deudas: Por qué debes 'congelar' tus plásticos."
+  },
+  {
+    "id": "SRC-009",
+    "tipo": "tendencia",
+    "titulo": "Gastos médicos inesperados como causa #1 de endeudamiento",
+    "resumen": "Muchos hispanos usan la tarjeta de crédito para emergencias médicas y luego no pueden salir del bucle.",
+    "angulo_video": "Si tuviste que usar tu tarjeta para una emergencia médica, no estás solo: así se resuelve."
+  },
+  {
+    "id": "SRC-010",
+    "tipo": "pregunta_frecuente",
+    "titulo": "¿Cuánto dura un programa de Consejería de deudas?",
+    "resumen": "Generalmente entre 24 y 48 meses, comparado con los 15-20 años pagando solo el mínimo.",
+    "angulo_video": "Deuda de $10,000: ¿Prefieres pagarla en 24 meses o en 18 años?"
+  }
+]
