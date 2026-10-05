@@ -101,11 +101,13 @@ alivio-norte-app/
 ├── requirements.txt   # Dependencias
 └── README.md
 ```
+## Nota de escala (~200 leads/hora)
+
+200 leads por hora es uno cada 18 segundos. Procesar un lead (clasificar, dejar el borrador o el resumen y escribir el log) tarda unos 0.02 s en un solo proceso, así que la carga pedida usa una fracción mínima de la capacidad. El límite real sería SQLite, que admite un solo escritor a la vez; si el volumen creciera mucho, el siguiente paso sería Postgres y una cola real, sin tocar las reglas.
 
 ## Entregables
 
 * [Decisiones: qué NO construí](docs/DECISIONES.md)
-* [Nota de escala (~200 leads/hora)](docs/ESCALA.md)
 * [Nota de uso de IA](docs/USO_DE_IA.md)
 * [Video](https://youtu.be/Sw8TjD-h_u8)
 
@@ -122,3 +124,5 @@ print("Decisión:", res.decision)
 print("Motivo:  ", res.reason)
 print("Estado:  ", res.prequal and res.prequal["estado"])
 ```
+
+**Nota de escala (~200 leads/hora).** 200 leads por hora es uno cada 18 segundos. El agente clasifica con reglas en memoria, sin llamadas externas, así que un solo proceso con SQLite debería absorberlo (no lo medí bajo carga). El cuello de botella es humano: con la mezcla actual (45 % responder, 40 % escalar, 15 % ignorar) serían unos 170 ítems por hora para que una persona los revise. Al crecer, lo primero que se rompe es SQLite (un solo escritor a la vez) y el webhook de la librería estándar; el siguiente paso sería Postgres y una cola real, sin tocar las reglas.
