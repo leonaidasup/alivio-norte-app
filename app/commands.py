@@ -4,16 +4,17 @@ import logging
 import threading
 from http.server import ThreadingHTTPServer
 from datetime import date
+from time import time
 
-from . import database as store
-from .agent import process_pending, run_forever
-from .ingest import import_leads, make_handler
-from .rules import RulesStore
-from .crm import apply_disposition
-from .whatsapp import process_outbox
-from .clean import clean_enrollments
-from .metrics import compute, report, write_csv
-from .stalled import compute_stalled, stalled_report, write_stalled_csv
+from .data import database as store
+from .services.agent import process_pending, run_forever
+from .data.ingest import import_leads, make_handler
+from .engine.rules import RulesStore
+from .services.crm import apply_disposition
+from .services.whatsapp import process_outbox
+from .data.clean import clean_enrollments
+from .analytics.metrics import compute, report, write_csv
+from .analytics.stalled import compute_stalled, stalled_report, write_stalled_csv
 
 RULES_PATH = store.ROOT / "config" / "rules.yaml"
 
@@ -45,7 +46,11 @@ def cmd_serve(args):
 
 
 def cmd_once(args):
-    print("procesados:", _process_all(store.DB(), RulesStore(RULES_PATH)))
+    t = time()
+    n = _process_all(store.DB(), RulesStore(RULES_PATH))
+    print("procesados:", n)
+    if n > 0:
+        print(f'Promedio tiempo de ejecucion: {(time() - t) / n}s')
 
 
 def cmd_import(args):

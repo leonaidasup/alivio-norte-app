@@ -8,8 +8,8 @@ import json
 import unittest
 from pathlib import Path
 
-from app.classifier import ESCALATE, IGNORE, RESPOND, classify
-from app.rules import load_rules
+from app.engine.classifier import ESCALATE, IGNORE, RESPOND, classify
+from app.engine.rules import load_rules
 
 ROOT = Path(__file__).resolve().parent.parent
 RULES = load_rules(ROOT / "config" / "rules.yaml")

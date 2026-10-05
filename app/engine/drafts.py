@@ -1,7 +1,7 @@
 """Borrador para la cola humana. Nunca se envía solo; siempre pasa por revisión de compliance."""
 import re
 
-from .textutils import normalize
+from app.engine.textutils import normalize
 
 TIPOS = {"tarjeta_credito": "tarjetas de crédito", "prestamo_personal": "préstamo personal",
          "gastos_medicos": "gastos médicos"}

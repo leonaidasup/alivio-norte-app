@@ -1,7 +1,7 @@
 import re
 from dataclasses import dataclass, field
 
-from .textutils import find_terms, normalize
+from app.engine.textutils import find_terms, normalize
 
 NUM = r"\d{1,3}(?:[,.]\d{3})+(?:[.,]\d{1,2})?|\d+(?:[.,]\d+)?"
 RE_DOLLAR = re.compile(rf"\$\s?({NUM})(?:\s?(k|mil|K)\b)?")      # $8,500  $8k  $ 12 mil

@@ -4,11 +4,11 @@ import json
 import logging
 import time
 
-from . import database as store
-from .classifier import ESCALATE, IGNORE, RESPOND, classify
-from .drafts import ComplianceError, build_draft, draft_document
-from .handoff import ACTIONS, build_summary
-from .rules import RulesError
+from app.data import database as store
+from app.engine.classifier import ESCALATE, IGNORE, RESPOND, classify
+from app.engine.drafts import ComplianceError, build_draft, draft_document
+from app.engine.handoff import ACTIONS, build_summary
+from app.engine.rules import RulesError
 
 log = logging.getLogger("alivio.agent")
 

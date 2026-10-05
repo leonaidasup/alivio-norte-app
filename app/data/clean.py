@@ -7,7 +7,7 @@ from collections import Counter
 from datetime import date, datetime, timezone
 from pathlib import Path
 
-from . import database as store
+from app.data import database as store
 
 REPORTS = store.ROOT / "reports"
 

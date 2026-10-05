@@ -13,8 +13,8 @@ Todo viene de las reglas: aquí no hay palabras ni umbrales escritos a mano.
 import re
 from dataclasses import asdict, dataclass, field
 
-from .extract import Amount, detect_debt_types, extract_amount, has_debt_signal, wants_counselor
-from .textutils import find_terms, neutralize, normalize
+from app.engine.extract import Amount, detect_debt_types, extract_amount, has_debt_signal, wants_counselor
+from app.engine.textutils import find_terms, neutralize, normalize
 
 RESPOND, IGNORE, ESCALATE = "responder", "ignorar", "escalar_humano"
 SENSITIVE_MASK = "[patrón sensible]"   # nunca se guarda el dato sensible en razones ni logs

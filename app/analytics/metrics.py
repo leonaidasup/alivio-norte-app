@@ -3,7 +3,7 @@ import csv
 import json
 from collections import Counter, defaultdict
 
-from .classifier import ESCALATE, IGNORE, RESPOND, classify
+from app.engine.classifier import ESCALATE, IGNORE, RESPOND, classify
 
 RANK = {"completado": 3, "en_proceso": 2, "cancelado": 1}   # si un lead tiene varias, gana la más avanzada
 GROUP_FIELDS = ["grupo", "valor", "leads", "responder", "escalar_humano", "ignorar", "completados", "conversion"]

@@ -6,7 +6,7 @@ import re
 import urllib.request
 from datetime import datetime, timedelta, timezone
 
-from . import database as store
+from app.data import database as store
 
 log = logging.getLogger("alivio.whatsapp")
 

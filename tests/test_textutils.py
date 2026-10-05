@@ -1,8 +1,8 @@
 import unittest
 from pathlib import Path
 
-from app.rules import load_rules
-from app.textutils import find_terms, neutralizar
+from app.engine.rules import load_rules
+from app.engine.textutils import find_terms, neutralize
 
 RULES = load_rules(Path(__file__).resolve().parent.parent / "config" / "rules.yaml")
 LEGAL = RULES["categorias_escalar_humano"]["legal"]["terminos"]
@@ -10,7 +10,7 @@ NEUTRAS = RULES["frases_neutras"]
 
 
 def legal_hits(txt):
-    return find_terms(neutralizar(txt, NEUTRAS), LEGAL)
+    return find_terms(neutralize(txt, NEUTRAS), LEGAL)
 
 
 class TestFrasesNeutras(unittest.TestCase):

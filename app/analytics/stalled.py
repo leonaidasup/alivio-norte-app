@@ -14,9 +14,9 @@ import json
 from collections import defaultdict
 from datetime import date
 
-from .classifier import ESCALATE, IGNORE, classify
-from .clean import parse_timestamp
-from .handoff import ACTIONS, DEFAULT_ACTION
+from app.engine.classifier import ESCALATE, IGNORE, classify
+from app.data.clean import parse_timestamp
+from app.engine.handoff import ACTIONS, DEFAULT_ACTION
 
 DEFAULTS = {"dias_sin_contacto": 2, "dias_en_proceso": 5}
 URGENT = {"riesgo_emocional", "hostigamiento_cobranza", "legal", "datos_sensibles"}

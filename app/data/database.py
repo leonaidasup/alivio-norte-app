@@ -4,7 +4,7 @@ from contextlib import contextmanager
 from datetime import datetime, timezone
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parent.parent.parent
 SCHEMA_FILE = ROOT / "db" / "schema.sql"
 DEFAULT_DB = Path(os.environ.get("ALIVIO_DB", ROOT / "runtime" / "alivio.db"))
 

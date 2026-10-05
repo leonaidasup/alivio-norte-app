@@ -5,9 +5,9 @@ import unittest
 from datetime import date
 from pathlib import Path
 
-from app.clean import clean_enrollments
-from app.rules import load_rules
-from app.stalled import compute_stalled
+from app.data.clean import clean_enrollments
+from app.engine.rules import load_rules
+from app.analytics.stalled import compute_stalled
 
 ROOT = Path(__file__).resolve().parent.parent
 LEADS = ROOT / "data" / "leads_chat.json"

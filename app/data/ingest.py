@@ -6,7 +6,7 @@ import os
 import re
 from http.server import BaseHTTPRequestHandler
 
-from . import database as store
+from app.data import database as store
 
 SSN = re.compile(r"\b\d{3}-\d{2}-\d{4}\b")
 CARD = re.compile(r"\b(?:\d{4}[ -]){3}\d{4}\b|\b\d{16}\b")

@@ -1,6 +1,6 @@
 """CRM: aplicar una disposición mueve la etapa, deja audit trail y prepara el WhatsApp (sin enviarlo)."""
-from . import database as store
-from .drafts import ComplianceError, enforce_compliance
+from app.data import database as store
+from app.engine.drafts import ComplianceError, enforce_compliance
 
 
 def _find_disposition(rules: dict, name):
