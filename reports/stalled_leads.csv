@@ -1,0 +1,21 @@
+﻿prioridad,lead_id,creador,canal,decision_agente,motivo_agente,situacion,dias_sin_avance,detalle,siguiente_accion
+alta,LEAD-1035,creator_05,CTWA,escalar_humano,riesgo_emocional,sin_inscripcion,5,sin inscripción registrada,PRIORIDAD MÁXIMA. Contactar cuanto antes con una persona real; no usar plantillas.
+alta,LEAD-1003,creator_01,CTWA,escalar_humano,legal,sin_inscripcion,6,sin inscripción registrada,No dar opinión legal. Que un Consejero revise el caso.
+alta,LEAD-1008,creator_05,CTWA,responder,precalificado,inscripcion_por_confirmar,6,datos con problemas: telefono_no_coincide,Pedir al partner que confirme esos datos. No pagar comisión hasta resolverlo.
+alta,LEAD-1010,creator_02,orgánico,escalar_humano,legal,sin_inscripcion,6,sin inscripción registrada,No dar opinión legal. Que un Consejero revise el caso.
+alta,LEAD-1017,creator_04,CTWA,escalar_humano,legal,sin_inscripcion,6,sin inscripción registrada,No dar opinión legal. Que un Consejero revise el caso.
+alta,LEAD-1021,creator_01,CTWA,responder,precalificado,inscripcion_por_confirmar,5,datos con problemas: fecha_ambigua,Pedir al partner que confirme esos datos. No pagar comisión hasta resolverlo.
+alta,LEAD-1023,creator_04,CTWA,escalar_humano,hostigamiento_cobranza,sin_inscripcion,5,sin inscripción registrada,Reporta acoso de cobranza. Responder con calma y escuchar antes de ofrecer algo.
+alta,LEAD-1027,creator_02,CTWA,responder,precalificado,inscripcion_por_confirmar,5,datos con problemas: fecha_vacia; telefono_no_coincide; creator_vacio,Pedir al partner que confirme esos datos. No pagar comisión hasta resolverlo.
+alta,LEAD-1029,creator_01,CTWA,escalar_humano,programa_previo,inscripcion_por_confirmar,5,datos con problemas: telefono_no_coincide; creator_vacio,Pedir al partner que confirme esos datos. No pagar comisión hasta resolverlo.
+alta,LEAD-1030,creator_05,CTWA,escalar_humano,legal,sin_inscripcion,5,sin inscripción registrada,No dar opinión legal. Que un Consejero revise el caso.
+alta,LEAD-1040,creator_02,orgánico,escalar_humano,hostigamiento_cobranza,sin_inscripcion,4,sin inscripción registrada,Reporta acoso de cobranza. Responder con calma y escuchar antes de ofrecer algo.
+media,LEAD-1007,creator_01,orgánico,escalar_humano,deuda_no_elegible,sin_inscripcion,6,sin inscripción registrada,Su deuda no es elegible para el programa. Revisar alternativas.
+media,LEAD-1011,creator_04,CTWA,responder,precalificado,en_proceso_sin_avance,6,inscripción en proceso desde 2026-09-28,Preguntar al partner en qué paso está la inscripción.
+media,LEAD-1013,creator_05,orgánico,escalar_humano,fraude_o_desconfianza,sin_inscripcion,6,sin inscripción registrada,"Desconfía o menciona fraude. Explicar el proceso con calma, sin presionar."
+media,LEAD-1015,creator_03,CTWA,escalar_humano,promesa_de_ahorro,sin_inscripcion,6,sin inscripción registrada,Pregunta por ahorro o garantías. No prometer: depende del perfil.
+media,LEAD-1016,creator_01,orgánico,responder,precalificado,sin_inscripcion,6,sin inscripción registrada,Revisar el borrador y contactar al lead.
+media,LEAD-1020,creator_03,CTWA,escalar_humano,deuda_no_elegible,sin_inscripcion,6,sin inscripción registrada,Su deuda no es elegible para el programa. Revisar alternativas.
+baja,LEAD-1006,creator_04,CTWA,responder,monto_bajo,sin_inscripcion,6,sin inscripción registrada,Revisar la respuesta de monto bajo y cerrar el caso; no insistir.
+baja,LEAD-1026,creator_03,CTWA,responder,monto_bajo,sin_inscripcion,5,sin inscripción registrada,Revisar la respuesta de monto bajo y cerrar el caso; no insistir.
+baja,LEAD-1033,creator_01,CTWA,responder,monto_bajo,sin_inscripcion,5,sin inscripción registrada,Revisar la respuesta de monto bajo y cerrar el caso; no insistir.

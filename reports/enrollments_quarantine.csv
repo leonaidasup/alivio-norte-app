@@ -1,0 +1,10 @@
+﻿linea,enrollment_id,enrolled_at,lead_id,phone,telefono_del_lead,creator_id,status,amount_usd,motivos
+4,ENR-5003,2026/13/45,LEAD-1005,+15550101005,+15550101005,creator_02,completado,6200,fecha_invalida
+5,ENR-5004,2026-09-28T14:30:00Z,LEAD-1008,+15550109999,+15550101008,creator_05,completado,9000,telefono_no_coincide
+10,ENR-5009,01-10-2026,LEAD-1021,+15550101021,+15550101021,creator_01,completado,6800,fecha_ambigua
+14,ENR-5012,N/A,LEAD-1027,+15550101027,+15550101027,creator_02,completado,16000,fecha_vacia
+15,ENR-5013,2026-09-29T15:30:00Z,LEAD-1029,+15550108888,+15550101029,,completado,7100,telefono_no_coincide; creator_vacio
+16,ENR-5014,2024-09-29T16:00:00Z,LEAD-1031,+15550101031,+15550101031,creator_02,completado,10500,inscripcion_antes_del_lead
+23,ENR-5021,fecha_invalida,LEAD-1014,+15550101014,+15550101014,creator_02,completado,18000,fecha_invalida
+24,ENR-5022,2026-09-30T12:30:00Z,LEAD-1027,+15550107777,+15550101027,,completado,16000,telefono_no_coincide; creator_vacio
+26,ENR-5024,2026-09-30T14:00:00Z,LEAD-1038,+15550101038,+15550101038,creator_01,completado,11800,lead_repetido

@@ -1,3 +1,5 @@
+# Reglas editables de Alivio Norte. Se recargan solas al guardar el archivo:
+# no hay que reiniciar nada ni tocar el código.
 version: "1.1"
 agencia: "Alivio Norte"
 partner: "Consejería Clara"
@@ -21,13 +23,18 @@ riesgo:
   umbral_escalar: 5
 
 reglas_monto:
-  monto_minimo_usd: 5000  # Por debajo del mínimo: responder_no_califica | ignorar | escalar_humano
-  accion_monto_bajo: "responder_no_califica" # (ignorar a alguien con deuda real es mala experiencia; por eso el default cambia)
+  # CAMBIO vs. versión original (1000): 5000. Las fuentes (SRC-002) y los casos
+  # límite de los leads (1022 "$5,000 justos", 1033 "$4,800") apuntan a $5k.
+  # Para volver al original, cambia este número.
+  monto_minimo_usd: 5000
+  # Por debajo del mínimo: responder_no_califica | ignorar | escalar_humano
+  # (ignorar a alguien con deuda real es mala experiencia; por eso el default cambia)
+  accion_monto_bajo: "responder_no_califica"
   monto_alto_revision_usd: 75000
 
 # Tipos de deuda. Cada término es una raíz: "medic" atrapa médica, médicos, etc.
 deudas_elegibles:
-  tarjeta_credito: [tarjeta, visa, mastercard, amex, chase, discover, discovery, "capital one", "tienda departamental", "credit card"]
+  tarjeta_credito: [tarjeta, visa, mastercard, amex, chase, discover, discovery, "capital one", "tienda departamental", "credit card", "deudas de credito", "deuda de credito"]
   prestamo_personal: ["prestamo personal", prestamo]
   gastos_medicos: [medic, hospital, clinica]
 
@@ -40,13 +47,22 @@ deudas_no_elegibles:
 senales_deuda: [debo, deuda, deudas, intereses, "pagos minimos", "los minimos", "bajar la cuota"]
 
 # Frases inocentes que contienen una raíz de riesgo. Se borran del texto ANTES de
+# buscar palabras de riesgo. Ej.: "sin embargo" no debe disparar "embarg".
+# Ojo: solo se borra la frase; "sin embargo me van a embargar" igual escala.
 frases_neutras: ["sin embargo", "oferta y demanda", "alta demanda", "mucha demanda", "buen juicio", "a mi juicio"]
+
+# Mensajes legítimos que aún no mencionan deuda ("hola", "info"): se responden pidiendo datos.
+# Si no hay señal de deuda NI de interés, el mensaje es ambiguo y va a un humano.
+senales_interes: [hola, buenas, buenos, "buen dia", info, ayud, "como funciona", "me interesa", "quiero saber", "quisiera saber", califico, aplico, consejeria]
 
 # ---------- IGNORAR ----------
 ignorar:
   mensajes_exactos: [ok, jaja, jajaja, gracias, listo]
   solo_emojis: true
-  spam_siempre: [bitcoin, crypto, cripto, "duplica tus ingresos", seguidores, siganme, "gana dinero", "sin buro", ".com"]
+  # Spam: se ignora siempre
+  spam_siempre: [bitcoin, crypto, cripto, "duplica tus ingresos", seguidores, siganme, "gana dinero", "sin buro", "sin esfuerzo", "http", "www."]
+  # Fuera de alcance: se ignora SOLO si no hay señal de deuda.
+  # Ej.: "me quedé sin trabajo y debo $7,400" NO se ignora aunque diga "trabajo".
   fuera_de_alcance_si_sin_deuda: [vacantes, empleo, trabajo, "busco trabajo", "buscan gente", "atencion al cliente", inversion, publicidad]
   baja_voluntaria: ["darme de baja", "no me escriban", "stop"]
   baja_marca_no_contactar: true
@@ -88,7 +104,7 @@ categorias_escalar_humano:
   pide_humano:
     peso: 5
     terminos: ["hablar con una persona", "hablar con un humano", "agente humano"]
-  vivienda_en_riesgo:
+  vivienda_en_riesgo:      # por sí sola no escala (peso < 5); suma con otras señales
     peso: 4
     terminos: ["perder mi casa", "quitar la casa", "quiten la casa"]
 
@@ -105,3 +121,24 @@ compliance:
   garantias_prohibidas: [garantizado, garantizamos, prometemos, "te aseguro", "100% seguro", "sin riesgo", "te vamos a ahorrar", "eliminamos tu deuda"]
   vocabulario_permitido_ahorro: ["podría", "en muchos casos", "dependiendo de tu perfil", "es posible"]
   nunca_afirmar: [tasas, "puntajes de crédito", tarifas]
+
+# ---------- DISPOSICIONES (Ejercicio B) ----------
+# Al aplicar una disposición: se mueve la etapa y se genera un WhatsApp (queda pendiente, no se envía solo).
+# {partner} y {consejero} se completan con los valores de arriba.
+disposiciones:
+  "No Answer":
+    etapa: sin_respuesta
+    whatsapp: "Hola, intentamos comunicarnos contigo sobre tu consulta de alivio de deudas. ¿En qué horario te viene mejor que te llamemos?"
+  "Info Sent":
+    etapa: info_enviada
+    whatsapp: "Hola, te enviamos la información sobre cómo {partner} podría ayudarte. Cuando la revises, cuéntanos si tienes dudas."
+  "Transferido":
+    etapa: transferido
+    whatsapp: "Gracias por tu confianza. Un {consejero} de {partner} revisará tu caso y se pondrá en contacto contigo."
+  "Call Back":
+    etapa: callback_pendiente
+    whatsapp: "Con gusto, quedamos pendientes de volver a llamarte. Si prefieres otro horario, escríbenos por aquí."
+  "No le interesa":
+    etapa: cerrado_no_interesado
+    marcar_no_contactar: true
+    whatsapp: "Entendido, gracias por tu tiempo. No te escribiremos más por este tema."

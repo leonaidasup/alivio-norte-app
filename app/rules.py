@@ -7,11 +7,63 @@ from pathlib import Path
 log = logging.getLogger("alivio.rules")
 
 BASIC_RULES = ["riesgo", "reglas_monto", "deudas_elegibles", "deudas_no_elegibles",
-               "ignorar", "categorias_escalar_humano", "precalificacion", "compliance"]
+               "ignorar", "categorias_escalar_humano", "precalificacion", "compliance",
+               "guardrails", "disposiciones"]
+            
+LOW_AMOUNT_ACTIONS = {"responder_no_califica", "ignorar", "escalar_humano"}
 
 
 class RulesError(Exception):
     """Error de las reglas de negocio (YAML vacío, incompleto o inválido)."""
+
+
+def _positive(value) -> bool:
+    return isinstance(value, (int, float)) and not isinstance(value, bool) and value > 0
+
+
+def validate_rules(rules: dict, path) -> None:
+    """Revisa valores, no solo que existan las secciones. Junta todos los errores en un solo mensaje."""
+    errors = []
+    risk, money, guard = rules["riesgo"], rules["reglas_monto"], rules["guardrails"]
+    for name, section in (("riesgo", risk), ("reglas_monto", money), ("guardrails", guard),
+                          ("disposiciones", rules["disposiciones"])):
+        if not isinstance(section, dict):
+            errors.append(f"'{name}' debe ser un bloque con claves")
+    if errors:
+        raise RulesError(f"{path} inválido:\n- " + "\n- ".join(errors))
+
+    for key in ("umbral_critico", "umbral_escalar"):
+        if not _positive(risk.get(key)):
+            errors.append(f"riesgo.{key} debe ser un número mayor que 0")
+    for key in ("monto_minimo_usd", "monto_alto_revision_usd"):
+        if not _positive(money.get(key)):
+            errors.append(f"reglas_monto.{key} debe ser un número mayor que 0")
+    if (_positive(money.get("monto_minimo_usd")) and _positive(money.get("monto_alto_revision_usd"))
+            and money["monto_minimo_usd"] >= money["monto_alto_revision_usd"]):
+        errors.append("reglas_monto.monto_minimo_usd debe ser menor que monto_alto_revision_usd")
+    if money.get("accion_monto_bajo") not in LOW_AMOUNT_ACTIONS:
+        errors.append(f"reglas_monto.accion_monto_bajo debe ser una de: {', '.join(sorted(LOW_AMOUNT_ACTIONS))}")
+
+    # candados: el sistema nunca actúa solo hacia afuera
+    for key in ("auto_enviar", "auto_transferir"):
+        if guard.get(key) is not False:
+            errors.append(f"guardrails.{key} debe ser false: este sistema no actúa solo hacia afuera")
+
+    for key in ("partner", "termino_personal_partner"):
+        if not isinstance(rules.get(key), str) or not rules[key].strip():
+            errors.append(f"'{key}' debe ser un texto")
+
+    for name, cfg in rules["disposiciones"].items():
+        if not isinstance(cfg, dict) or not isinstance(cfg.get("etapa"), str) or not isinstance(cfg.get("whatsapp"), str):
+            errors.append(f"disposición '{name}' necesita 'etapa' y 'whatsapp' (texto)")
+            continue
+        try:
+            cfg["whatsapp"].format(partner="", consejero="")
+        except (KeyError, IndexError, ValueError) as e:
+            errors.append(f"disposición '{name}': el WhatsApp tiene un campo inválido ({e})")
+
+    if errors:
+        raise RulesError(f"{path} inválido:\n- " + "\n- ".join(errors))
 
 
 def load_rules(path) -> dict:
@@ -30,6 +82,7 @@ def load_rules(path) -> dict:
     for name, cat in rules["categorias_escalar_humano"].items():
         if not isinstance(cat.get("peso"), (int, float)):
             raise RulesError(f"Categoría '{name}' necesita un 'peso' numérico")
+    validate_rules(rules, path)
     return rules
 
 

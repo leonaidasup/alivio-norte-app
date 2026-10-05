@@ -1,0 +1,22 @@
+﻿linea,enrollment_id,accion,campo,antes,despues,regla
+2,ENR-5001,corregido,telefono,15550101001,+15550101001,formato_telefono
+3,ENR-5002,corregido,telefono,+1-555-010-1002,+15550101002,formato_telefono
+4,ENR-5003,corregido,telefono,5550101005,+15550101005,formato_telefono
+4,ENR-5003,corregido,creator_id,,creator_02,creator_inferido_de_lead
+4,ENR-5003,cuarentena,,,,fecha_invalida
+5,ENR-5004,cuarentena,,,,telefono_no_coincide
+7,ENR-5006,corregido,telefono,5550101012,+15550101012,formato_telefono
+8,ENR-5007,corregido,creator_id,,creator_02,creator_inferido_de_lead
+10,ENR-5009,cuarentena,,,,fecha_ambigua
+12,ENR-5001,descartado,,,,duplicado_exacto
+13,ENR-5011,corregido,telefono,555-010-1025,+15550101025,formato_telefono
+14,ENR-5012,cuarentena,,,,fecha_vacia
+15,ENR-5013,cuarentena,,,,telefono_no_coincide; creator_vacio
+16,ENR-5014,corregido,fecha,1727625600,2024-09-29T16:00:00Z,formato_fecha
+16,ENR-5014,cuarentena,,,,inscripcion_antes_del_lead
+17,ENR-5015,corregido,telefono,5550101032,+15550101032,formato_telefono
+21,ENR-5019,corregido,telefono,5550101039,+15550101039,formato_telefono
+22,ENR-5020,corregido,telefono,5550101005,+15550101005,formato_telefono
+23,ENR-5021,cuarentena,,,,fecha_invalida
+24,ENR-5022,cuarentena,,,,telefono_no_coincide; creator_vacio
+26,ENR-5024,cuarentena,,,,lead_repetido
