@@ -1,1 +1,11 @@
-[{"id": "LEAD-TEST-01", "created_at": "2026-10-04T23:00:00Z", "creator": "creator_01", "channel": "CTWA", "message": "Hola, tengo una deuda de 20000 con 2 tarjetas y necesito ayuda"}]
+[
+  {
+    "id": "LEAD-TEST-19",
+    "created_at": "2026-12-04T23:00:00Z",
+    "creator": "creator_03",
+    "channel": "CTWA",
+    "mensaje": "Buenas noches empresa, soy leo, debo $7,000 en tarjetas y préstamos.",
+    "telefono_ficticio": "+15550101001",
+    "estado_inicial": "nuevo"
+  }
+]

@@ -1,38 +1,36 @@
-# Reglas editables de Alivio Norte. Se recargan solas al guardar el archivo:
-# no hay que reiniciar nada ni tocar el código.
+# Reglas de negocio - Alivio Norte
+# Recarga en caliente: los cambios se aplican al guardar (sin reiniciar el servicio).
 version: "1.1"
 agencia: "Alivio Norte"
 partner: "Consejería Clara"
 termino_personal_partner: "Consejero"
 
-# Candados: el sistema nunca actúa solo hacia afuera.
+# Seguros: previene envíos o transferencias automáticas sin supervisión
 guardrails:
   auto_enviar: false
   auto_transferir: false
-  ante_duda: "escalar_humano"
+  ante_duda: "escalar_humano" # en caso que no califique pero no sea spam
 
-# Orden en que se decide (primera regla que aplica gana).
-# Debe mantenerse igual que el docstring de app/engine/classifier.py:
-#   0) solo emojis/símbolos                                   -> ignorar
-#   1) riesgo crítico (peso >= umbral_critico)                -> escalar_humano
-#   2) baja voluntaria, spam, mensaje vacío, fuera de alcance -> ignorar
-#   3) suma de riesgos >= umbral_escalar                      -> escalar_humano
-#   4) deuda no elegible o monto >= monto_alto_revision_usd   -> escalar_humano
-#   5) sin señal de deuda ni de interés (ambiguo)             -> escalar_humano
-#   6) monto < monto_minimo_usd                               -> accion_monto_bajo
-#   7) en otro caso                                           -> responder (pre-califica + borrador)
+# Prioridad de evaluación (se ejecuta la primera regla que coincida).
+#   0) Solo emojis/símbolos                             -> ignorar
+#   1) Riesgo crítico (peso >= umbral_critico)          -> escalar_humano
+#   2) Baja, spam, mensaje vacío o fuera de alcance     -> ignorar
+#   3) Suma de riesgos >= umbral_escalar                -> escalar_humano
+#   4) Deuda no elegible o monto >= límite revisión     -> escalar_humano
+#   5) Mensaje ambiguo (sin datos de deuda ni interés)  -> escalar_humano (ante la duda o asistente IA)
+#   7) Resto de casos                                   -> responder (pre-califica + borrador)
+
 riesgo:
   umbral_critico: 9
-  umbral_escalar: 5
+  umbral_escalar: 6
 
 reglas_monto:
-  monto_minimo_usd: 5000
-  # Por debajo del mínimo: responder_no_califica | ignorar | escalar_humano
-  # (ignorar a alguien con deuda real es mala experiencia; por eso el default cambia)
+  monto_minimo_usd: 2000
+  # Opciones para monto bajo: responder_no_califica | ignorar | escalar_humano
   accion_monto_bajo: "responder_no_califica"
   monto_alto_revision_usd: 75000
 
-# Tipos de deuda. Cada término es una raíz: "medic" atrapa médica, médicos, etc.
+# Tipos de deuda (búsqueda por raíz: ej. "medic" detecta médica, médicos, etc.)
 deudas_elegibles:
   tarjeta_credito: [tarjeta, visa, mastercard, amex, chase, discover, discovery, "capital one", "tienda departamental", "credit card", "deudas de credito", "deuda de credito"]
   prestamo_personal: ["prestamo personal", prestamo]
@@ -43,32 +41,29 @@ deudas_no_elegibles:
   prestamo_estudiantil: [estudiantil]
   prestamo_auto: ["prestamo de auto", "prestamo del auto", "prestamo del carro", "financiamiento del auto", "deuda del carro"]
 
-# Palabras que indican que el mensaje trata de una deuda (aparte del monto y el tipo)
+# Palabras clave que identifican contexto de deuda
 senales_deuda: [debo, deuda, deudas, intereses, "pagos minimos", "los minimos", "bajar la cuota"]
 
-# Frases inocentes que contienen una raíz de riesgo. Se borran del texto ANTES de
-# buscar palabras de riesgo. Ej.: "sin embargo" no debe disparar "embarg".
-# Ojo: solo se borra la frase; "sin embargo me van a embargar" igual escala.
+# Frases neutras: se eliminan antes del análisis para evitar falsos positivos
+# (ej: "sin embargo" previene activar la regla de "embargo", pero si incluye "me van a embargar" sigue escalando).
 frases_neutras: ["sin embargo", "oferta y demanda", "alta demanda", "mucha demanda", "buen juicio", "a mi juicio"]
 
-# Mensajes legítimos que aún no mencionan deuda ("hola", "info"): se responden pidiendo datos.
-# Si no hay señal de deuda NI de interés, el mensaje es ambiguo y va a un humano.
+# Saludos o consultas iniciales. Si no hay señal de deuda ni de interés, se escala por ambigüedad.
 senales_interes: [hola, buenas, buenos, "buen dia", info, ayud, "como funciona", "me interesa", "quiero saber", "quisiera saber", califico, aplico, consejeria]
 
-# ---------- IGNORAR ----------
+# === DESCARTE (IGNORAR) ===
 ignorar:
   mensajes_exactos: [ok, jaja, jajaja, gracias, listo]
   solo_emojis: true
-  # Spam: se ignora siempre
   spam_siempre: [bitcoin, crypto, cripto, "duplica tus ingresos", seguidores, siganme, "gana dinero", "sin buro", "sin esfuerzo", "http", "www."]
-  # Fuera de alcance: se ignora SOLO si no hay señal de deuda.
-  # Ej.: "me quedé sin trabajo y debo $7,400" NO se ignora aunque diga "trabajo".
+  # Fuera de alcance: solo aplica si NO se detecta contexto de deuda
+  # (ej: "busco trabajo pero debo $7,400" se procesa normalmente).
   fuera_de_alcance_si_sin_deuda: [vacantes, empleo, trabajo, "busco trabajo", "buscan gente", "atencion al cliente", inversion, publicidad]
   baja_voluntaria: ["darme de baja", "no me escriban", "stop"]
   baja_marca_no_contactar: true
 
-# ---------- ESCALAR A HUMANO ----------
-# peso >= umbral_critico: escala sin más. Si no, los pesos se suman contra umbral_escalar.
+# === ESCALAMIENTO A HUMANO ===
+# Regla: peso >= umbral_critico escala inmediatamente. De lo contrario, suma puntos hasta umbral_escalar.
 categorias_escalar_humano:
   riesgo_emocional:
     peso: 10
@@ -78,7 +73,7 @@ categorias_escalar_humano:
     terminos: [abogad, demand, juez, juicio, embarg, quiebra, bancarrota, citatorio, "orden judicial"]
   datos_sensibles:
     peso: 9
-    regex: ['\b\d{3}-\d{2}-\d{4}\b']   # formato de número de seguro social
+    regex: ['\b\d{3}-\d{2}-\d{4}\b']   # Formato SSN (Seguro Social)
     terminos: ["seguro social", ssn, "numero de tarjeta"]
   hostigamiento_cobranza:
     peso: 7
@@ -104,16 +99,16 @@ categorias_escalar_humano:
   pide_humano:
     peso: 5
     terminos: ["hablar con una persona", "hablar con un humano", "agente humano"]
-  vivienda_en_riesgo:      # por sí sola no escala (peso < 5); suma con otras señales
+  vivienda_en_riesgo:      # Peso < 5: no escala solo, pero suma si hay más alertas
     peso: 4
     terminos: ["perder mi casa", "quitar la casa", "quiten la casa"]
 
-# ---------- PRE-CALIFICACIÓN ----------
+# === PRE-CALIFICACIÓN ===
 precalificacion:
   quiere_consejero: [consejero, asesor, "me llamen", "me pueden llamar", "agendar una llamada", "me pasa con", "hablar con un", "quisiera hablar"]
   urgencia: ["hoy mismo", urgente, "lo antes posible"]
 
-# ---------- CUMPLIMIENTO DE LENGUAJE ----------
+# === CUMPLIMIENTO / COMPLIANCE ===
 compliance:
   termino_prohibido: "asesor"
   termino_obligatorio: "Consejero"
@@ -122,9 +117,9 @@ compliance:
   vocabulario_permitido_ahorro: ["podría", "en muchos casos", "dependiendo de tu perfil", "es posible"]
   nunca_afirmar: [tasas, "puntajes de crédito", tarifas]
 
-# ---------- DISPOSICIONES ----------
-# Al aplicar una disposición: se mueve la etapa y se genera un WhatsApp (queda pendiente, no se envía solo).
-# {partner} y {consejero} se completan con los valores de arriba.
+# === PLANTILLAS DE DISPOSICIÓN ===
+# Generan un borrador de WhatsApp (no se envía solo) y actualizan el estado.
+# {partner} y {consejero} se reemplazan automáticamente.
 disposiciones:
   "No Answer":
     etapa: sin_respuesta

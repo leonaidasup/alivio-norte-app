@@ -107,7 +107,7 @@ alivio-norte-app/
 * [Decisiones: qué NO construí](docs/DECISIONES.md)
 * [Nota de escala (~200 leads/hora)](docs/ESCALA.md)
 * [Nota de uso de IA](docs/USO_DE_IA.md)
-* [Video](ENLACE)
+* [Video](https://youtu.be/Sw8TjD-h_u8)
 
 ## Verificación rápida del motor
 
