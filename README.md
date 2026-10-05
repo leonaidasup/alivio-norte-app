@@ -58,14 +58,6 @@ python -m app metrics
    negocio)                determinista)            Audit Trail)
 ```
 
-## Reglas de Negocio y Cumplimiento
-
-* **Evaluación determinista:** La clasificación se basa estrictamente en `config/rules.yaml` sin el uso de LLMs ni modelos generativos.
-* **Terminología obligatoria:** El personal del partner se registra únicamente bajo el rol de *Consejero* (se omite el término "asesor").
-* **Manejo de ahorros:** Cualquier referencia a ahorros potenciales se redacta en condicional ("podría", "en varios casos") sin garantizar porcentajes específicos.
-* **Modo borrador (Draft-only):** Los parámetros `auto_enviar` y `auto_transferir` están forzados en `false`. El sistema genera borradores en la cola para revisión humana sin realizar envíos directos.
-* **Persistencia:** Conexiones SQLite con journaling WAL para soportar operaciones concurrentes.
-
 ## Comandos CLI
 
 | Comando | Descripción | Entradas / Salidas |
