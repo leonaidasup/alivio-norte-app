@@ -11,21 +11,21 @@ guardrails:
   auto_transferir: false
   ante_duda: "escalar_humano"
 
-# Orden en que se decide (primera regla que aplica gana):
-#   1) riesgo crítico (peso >= umbral_critico)        -> escalar_humano
-#   2) spam o fuera de alcance                        -> ignorar
-#   3) suma de riesgos >= umbral_escalar              -> escalar_humano
-#   4) deuda no elegible o monto muy alto             -> escalar_humano
-#   5) monto bajo                                     -> accion_monto_bajo
-#   6) en otro caso                                   -> responder (pre-califica + borrador)
+# Orden en que se decide (primera regla que aplica gana).
+# Debe mantenerse igual que el docstring de app/engine/classifier.py:
+#   0) solo emojis/símbolos                                   -> ignorar
+#   1) riesgo crítico (peso >= umbral_critico)                -> escalar_humano
+#   2) baja voluntaria, spam, mensaje vacío, fuera de alcance -> ignorar
+#   3) suma de riesgos >= umbral_escalar                      -> escalar_humano
+#   4) deuda no elegible o monto >= monto_alto_revision_usd   -> escalar_humano
+#   5) sin señal de deuda ni de interés (ambiguo)             -> escalar_humano
+#   6) monto < monto_minimo_usd                               -> accion_monto_bajo
+#   7) en otro caso                                           -> responder (pre-califica + borrador)
 riesgo:
   umbral_critico: 9
   umbral_escalar: 5
 
 reglas_monto:
-  # CAMBIO vs. versión original (1000): 5000. Las fuentes (SRC-002) y los casos
-  # límite de los leads (1022 "$5,000 justos", 1033 "$4,800") apuntan a $5k.
-  # Para volver al original, cambia este número.
   monto_minimo_usd: 5000
   # Por debajo del mínimo: responder_no_califica | ignorar | escalar_humano
   # (ignorar a alguien con deuda real es mala experiencia; por eso el default cambia)
@@ -122,7 +122,7 @@ compliance:
   vocabulario_permitido_ahorro: ["podría", "en muchos casos", "dependiendo de tu perfil", "es posible"]
   nunca_afirmar: [tasas, "puntajes de crédito", tarifas]
 
-# ---------- DISPOSICIONES (Ejercicio B) ----------
+# ---------- DISPOSICIONES ----------
 # Al aplicar una disposición: se mueve la etapa y se genera un WhatsApp (queda pendiente, no se envía solo).
 # {partner} y {consejero} se completan con los valores de arriba.
 disposiciones:
