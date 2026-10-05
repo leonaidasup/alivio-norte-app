@@ -48,7 +48,7 @@ def enqueue(c, external_id, lead_id, text, received_at=None, creator="", channel
     return cur.rowcount == 1
 
 
-def pending(c, limit=50, max_attempts=3):
+def pending(c, limit=100, max_attempts=3):
     return c.execute(
         "SELECT * FROM messages WHERE status IN ('nuevo','error') AND attempts < ? ORDER BY id LIMIT ?",
         (max_attempts, limit)).fetchall()

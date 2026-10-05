@@ -88,17 +88,18 @@ Todo el criterio de negocio vive en `config/rules.yaml`, sin tocar código: umbr
 ```text
 alivio-norte-app/
 ├── app/
-│   ├── data/        # base de datos, limpieza del CSV
-│   ├── engine/      # clasificador, reglas, borradores, handoff, CRM, WhatsApp
-│   ├── commands.py  # comandos del CLI
-│   └── __main__.py
-├── config/rules.yaml
-├── db/schema.sql
-├── data/            # leads y CSV de prueba
-├── docs/            # contenido y notas
-├── reports/         # salidas de limpieza y métricas
-├── runtime/         # base, borradores, logs (se genera al correr)
-└── demo/            # corrida de ejemplo
+│   ├── analytics/     # Agregación de métricas de atribución y exportación
+│   ├── data/          # Esquema SQLite, migraciones y gestión de sesión WAL
+│   ├── engine/        # Motor de clasificación determinista y evaluador de reglas
+│   ├── runtime/       # Pipeline ETL, limpieza de datos y aislador de cuarentena
+│   └── services/      # Lógica de negocio para integraciones y matriz del CRM
+├── config/
+│   └── rules.yaml     # Reglas de negocio
+├── data/              # Datasets de prueba
+├── docs/              # Estrategia de contenido
+├── reports/           # Archivos exportados
+├── requirements.txt   # Dependencias
+└── README.md
 ```
 
 ## Entregables
@@ -106,7 +107,7 @@ alivio-norte-app/
 * [Decisiones: qué NO construí](docs/DECISIONES.md)
 * [Nota de escala (~200 leads/hora)](docs/ESCALA.md)
 * [Nota de uso de IA](docs/USO_DE_IA.md)
-* [Video de la demo (≤ 6 min)](ENLACE)
+* [Video](ENLACE)
 
 ## Verificación rápida del motor
 
