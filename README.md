@@ -105,11 +105,15 @@ print(f"Motivo:   {res.reason}")
 print(f"Estado:   {res.prequal['estado']}")
 ```
 
+## Nota de Escala y Rendimiento
+
+* **Entorno de prueba:** Intel Core i5 (8va gen), 8 GB RAM (hardware de consumo).
+* **Latencia promedio en frío:** ~22.6 ms por lead (clasificación + persisencia WAL).
+* **Carga de negocio solicitada:** 200 leads / hora $\approx$ 1 lead cada 18 segundos.
+
 ## Nota sobre el uso de IA
 
 Se utilizó Inteligencia Artificial generativa como herramienta de soporte exclusivamente para:
 * Generación de código base para la CLI y migración de SQLite.
 * Creación de datasets sintéticos de prueba (`leads_chat.json` y `partner_enrollments_dirty.csv`).
 * Estructuración de la documentación en Markdown.
-
-*Nota:* El motor de clasificación (`classifier.py`) es **100% determinista** y no realiza llamad
