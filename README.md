@@ -58,14 +58,6 @@ python -m app metrics
    negocio)                determinista)            Audit Trail)
 ```
 
-## Reglas de Negocio y Cumplimiento
-
-* **Evaluación determinista:** La clasificación se basa estrictamente en `config/rules.yaml` sin el uso de LLMs ni modelos generativos.
-* **Terminología obligatoria:** El personal del partner se registra únicamente bajo el rol de *Consejero* (se omite el término "asesor").
-* **Manejo de ahorros:** Cualquier referencia a ahorros potenciales se redacta en condicional ("podría", "en varios casos") sin garantizar porcentajes específicos.
-* **Modo borrador (Draft-only):** Los parámetros `auto_enviar` y `auto_transferir` están forzados en `false`. El sistema genera borradores en la cola para revisión humana sin realizar envíos directos.
-* **Persistencia:** Conexiones SQLite con journaling WAL para soportar operaciones concurrentes.
-
 ## Comandos CLI
 
 | Comando | Descripción | Entradas / Salidas |
@@ -75,12 +67,6 @@ python -m app metrics
 | `python -m app clean <path>` | Filtra inscripciones y aísla registros erróneos en cuarentena. | `data/partner_enrollments_dirty.csv` |
 | `python -m app metrics` | Genera y exporta la analítica del funnel a CSV. | `reports/funnel_metrics.csv` |
 
-## Cobertura de la Prueba Técnica
-
-* **Ejercicio A (`app/engine/classifier.py`):** Ingesta, clasificación determinista (`responder`, `ignorar`, `escalar_humano`) y preparación de borrador en cola.
-* **Ejercicio B (`app/engine/crm.py`):** Manejo de 5 disposiciones (*No Answer*, *Info Sent*, *Transferido*, *Call Back*, *No le interesa*), registro de auditoría y gestión de fallos.
-* **Ejercicio C (`app/etl/cleaner.py`):** Limpieza de CSV, detección de anomalías (ID nulo, inconsistencia de teléfono, fechas inválidas) y reporte.
-* **Ejercicio D (`docs/content_strategy.md`):** Guiones de 30–45s estructurados por fuente de contenido.
 
 ## Estructura del Proyecto
 
@@ -89,9 +75,6 @@ alivio-norte-app/
 ├── app/
 │   ├── data/          # Esquema SQLite, migraciones y conexión WAL
 │   ├── engine/        # Clasificación determinista y reglas
-│   │   ├── classifier.py
-│   │   ├── extract.py
-│   │   └── rules.py
 │   ├── etl/           # Limpieza de CSVs y cuarentena
 │   ├── reports/       # Generación de métricas
 │   ├── commands.py    # Lógica de comandos CLI
