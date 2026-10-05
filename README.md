@@ -104,3 +104,12 @@ print(f"Decisión: {res.decision}")
 print(f"Motivo:   {res.reason}")
 print(f"Estado:   {res.prequal['estado']}")
 ```
+
+## Nota sobre el uso de IA
+
+Se utilizó Inteligencia Artificial generativa como herramienta de soporte exclusivamente para:
+* Generación de código base para la CLI y migración de SQLite.
+* Creación de datasets sintéticos de prueba (`leads_chat.json` y `partner_enrollments_dirty.csv`).
+* Estructuración de la documentación en Markdown.
+
+*Nota:* El motor de clasificación (`classifier.py`) es **100% determinista** y no realiza llamad
