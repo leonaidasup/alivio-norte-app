@@ -73,12 +73,11 @@ python -m app metrics
 ```text
 alivio-norte-app/
 ├── app/
-│   ├── data/          # Esquema SQLite, migraciones y conexión WAL
-│   ├── engine/        # Clasificación determinista y reglas
-│   ├── etl/           # Limpieza de CSVs y cuarentena
-│   ├── reports/       # Generación de métricas
-│   ├── commands.py    # Lógica de comandos CLI
-│   └── __main__.py    # Entrada principal del CLI
+│   ├── analytics/     # Agregación de métricas de atribución y exportación
+│   ├── data/          # Esquema SQLite, migraciones y gestión de sesión WAL
+│   ├── engine/        # Motor de clasificación determinista y evaluador de reglas
+│   ├── runtime/       # Pipeline ETL, limpieza de datos y aislador de cuarentena
+│   └── services/      # Lógica de negocio para integraciones y matriz del CRM
 ├── config/
 │   └── rules.yaml     # Reglas de negocio
 ├── data/              # Datasets de prueba
